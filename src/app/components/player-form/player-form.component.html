@@ -1,0 +1,37 @@
+<div class="hero overlay" style="background-image: url('assets/images/bg_3.jpg');">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-9 mx-auto text-center">
+        <h1 class="text-white">{{title}} Player</h1>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="site-section">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-3"></div>
+      <div class="col-lg-6">
+        <form #addPlayerForm='ngForm' (ngSubmit)='addEditPlayer()'>
+          <div class="form-group">
+            <input type="text" class="form-control" [(ngModel)]='player.name' [ngModelOptions]="{standalone: true}" placeholder="Name">
+          </div>
+          <div class="form-group">
+            <input type="text" class="form-control" [(ngModel)]='player.age' [ngModelOptions]="{standalone: true}" placeholder="Age">
+          </div>
+          <div class="form-group">
+            <input type="text" class="form-control" [(ngModel)]='player.nbr' [ngModelOptions]="{standalone: true}" placeholder="Number">
+          </div>
+          <div class="form-group">
+            <input type="text" class="form-control" [(ngModel)]='player.post' [ngModelOptions]="{standalone: true}" placeholder="Post">
+          </div>
+          <div class="form-group">
+            <button type="submit" class="btn btn-primary py-3 px-5">{{title}} Player</button>
+          </div>
+        </form>
+      </div>
+      <div class="col-lg-3"></div>
+    </div>
+  </div>
+</div>
