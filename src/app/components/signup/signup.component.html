@@ -61,15 +61,17 @@
               Confirm Pwd must match PWD
             </div>
           </div>
+          <!-- Start IMG -->
           <div class="text-center">
-            <button type="button" (click)='filePicker.click()' class="btn btnsuccess">Sélectionner image</button>
+            <button type="button" (click)='filePicker.click()' class="btn btn-success">Sélectionner image</button>
           </div>
           <div class="form-group">
-          <input type="file" #filePicker (change)='onImageSelected($event)' class="form-control"  style="visibility: hidden;" />
+            <input type="file" #filePicker (change)='onImageSelected($event)' class="form-control"  style="visibility: hidden;" />
           </div>
           <div class="text-center mb-5">
-            <img [src]="imagePreview" *ngIf="imagePreview" style="width: 150px; height: 150px;">
+            <img [src]="imagePreview" *ngIf="imagePreview" style="width: 180px; height: 180px;">
           </div>
+          <!-- End IMG -->
           <div class="form-group text-center">
             <button [disabled]="signupForm.invalid" type="submit" class="btn btn-primary py-3 px-5" (click)='signup()'>Signup</button>
           </div>

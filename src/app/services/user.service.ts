@@ -11,7 +11,7 @@ export class UserService {
 
 
   signup(user:any, img:File){
-    let formData = new FormData();
+    let formData = new FormData(); //on doit envoyer FormData au BE car JSON ne comporte pas les files
     formData.append('firstName', user.firstName);
     formData.append('lastName', user.lastName);
     formData.append('email', user.email);
@@ -19,6 +19,7 @@ export class UserService {
     formData.append('img', img);
     return this.httpClient.post<{message:string}>(`${this.userURL}/signup`, formData);
   }
+
   login(user:any){
     return this.httpClient.post<{msg:string,userToSend:any}>(`${this.userURL}/login`, user);
   }

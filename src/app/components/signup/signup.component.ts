@@ -20,7 +20,7 @@ export class SignupComponent implements OnInit {
       firstName:['',[Validators.required, Validators.minLength(3)]],
       lastName:[''],
       email:['',[Validators.required, Validators.email]],
-      pwd:['',[Validators.minLength(8), Validators.maxLength(12)]],
+      pwd:['',[Validators.minLength(3), Validators.maxLength(12)]],
       confirmPwd:[''],
       img:['']
     },
@@ -39,12 +39,12 @@ export class SignupComponent implements OnInit {
   }
 
   onImageSelected(event: Event) {
-    const file = (event.target as HTMLInputElement).files[0];
-    this.signupForm.patchValue({ img: file });
-    this.signupForm.updateValueAndValidity();
+    const file = (event.target as HTMLInputElement).files[0];//pour get limage choisi (files[0]:on a une seule image dans notre cas: cela signefi que on peut choisir plusieurs files)
+    this.signupForm.patchValue({ img: file }); // c'est pour patcher l'image dans l'attr img
+    this.signupForm.updateValueAndValidity(); // c'est pour actualiser signupForm
     const reader = new FileReader();
     reader.onload = () => {
-      this.imagePreview = reader.result as string
+      this.imagePreview = reader.result as string // c'est pour transformer l'image en string (base64)
     };
     reader.readAsDataURL(file);
     }

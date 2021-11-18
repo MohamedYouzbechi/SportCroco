@@ -11,22 +11,25 @@ import { UserService } from 'src/app/services/user.service';
 export class LoginComponent implements OnInit {
 
   LoginForm:FormGroup;
-  user:any={};
+  user:any={}; //Declaration d'objet : Cela signefie que le Form de type TDF
   msgError:string;
-  constructor(private formBuilder:FormBuilder, private userService:UserService, private router:Router) { }
+
+  constructor(private formBuilder:FormBuilder,
+              private userService:UserService,
+              private router:Router) { }
 
   ngOnInit() {
-    this.LoginForm = this.formBuilder.group({
-      email:[''],
-      pwd:['']
-    })
+    // this.LoginForm = this.formBuilder.group({
+    //   email:[''],
+    //   pwd:['']
+    // })
   }
 
   login(){
     // console.log('user object', this.user);
     this.userService.login(this.user).subscribe(
       (data)=> {
-        console.log('data', data);
+        console.log('data test FE', data);
 
         if (data.msg != '2') {
           this.msgError = 'Please chek email/pwd';

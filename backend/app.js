@@ -50,7 +50,7 @@ const MIME_TYPE = {
  }
 
  const storageConfig = multer.diskStorage({
-    // destination
+    //il va sauvegarder l'image dans cettte destination après la modif de son nom
     destination: (req, file, cb) => {
     const isValid = MIME_TYPE[file.mimetype];
     let error = new Error("Mime type is invalid");
@@ -59,7 +59,8 @@ const MIME_TYPE = {
     }
     cb(null, 'backend/images')
     },
-    filename: (req, file, cb) => {
+    // c'est pour la modif de nom de l'image
+    filename: (req, file, cb) => { //cb : call back
     const name = file.originalname.toLowerCase().split(' ').join('-');
     const extension = MIME_TYPE[file.mimetype];
     const imgName = name + '-' + Date.now() + '-crococoder-' + '.' + extension;
@@ -83,6 +84,8 @@ app.get('/matches',(req,res)=>{// when i receive request avec action GET à ladr
   //   {id:3, teamOne:"EST", teamTwo:"CA",scoreOne:"0",scoreTwo:"0"},
   //   {id:4, teamOne:"TUN", teamTwo:"EGY",scoreOne:"4",scoreTwo:"2"}
   //  ];
+  // res.status(200).json(matches);
+
   Match.find((err,docs)=>{
     if (err) {
       console.log("Eroor with DB")
@@ -277,11 +280,11 @@ app.put('/teams/:id',(req,res)=>{
 
 //* ******************************** SignUp & Login *************************** */
 //Business logic: Signup
-app.post('/users/signup', multer({ storage: storageConfig }).single('img'),(req,res)=> {
-  console.log('Here into signup', req.body);
+app.post('/users/signup', multer({ storage: storageConfig }).single('img'), (req,res)=> {
+  console.log('Here into signup BE', req.body);
   bcrypt.hash(req.body.pwd, 10).then(
     (cryptedPwd)=> {
-      let url = req.protocol + '://' + req.get('host');
+      let url = req.protocol + '://' + req.get('host'); //construire URL (http/https + Nom Domaine): http://localhost:3000
       const user = new User({
         firstName: req.body.firstName,
         lastName: req.body.lastName,
@@ -302,7 +305,7 @@ app.post('/users/signup', multer({ storage: storageConfig }).single('img'),(req,
 })
 // Business Logic: Login
 app.post('/users/login', (req, res) => {
-  console.log('Here into Login', req.body);
+  console.log('Here into Login BE', req.body);
   User.findOne({ email: req.body.email }).then(
       (emailResult) => {
           console.log('Email Result', emailResult);
@@ -310,10 +313,10 @@ app.post('/users/login', (req, res) => {
           if (!emailResult) {
               res.status(200).json({
                   msg: '0'
-              })
+              }) //l'execution de ce bloc(app.post('/users/login'...) s'arrete ici(res.status...) si le condition IF est vrai
           }
 
-          return bcrypt.compare(req.body.pwd, emailResult.pwd);
+          return bcrypt.compare(req.body.pwd, emailResult.pwd); //on doit faire "return" pour que le "then" suivant fonctionne
       }).then(
           (pwdResult) => {
               console.log('pwdResult', pwdResult);
@@ -322,14 +325,15 @@ app.post('/users/login', (req, res) => {
                       msg: '1'
                   })
               }
-              User.findOne({ email: req.body.email }).then(
+              //Si l'execution arrive ici : donc l'authentification est validé
+              User.findOne({ email: req.body.email }).then(//on utilise autre fois cette ligne car on n'a pas d'acces sur la var "emailResult" de 4éme ligne de ce bloc : il faut l'utiliser just dans son bloc function
                   (finalResult)=> {
                       let userToSend = {
                           id: finalResult._id,
                           fName: finalResult.firstName,
                           lName: finalResult.lastName
                       }
-                      console.log('User to send', userToSend);
+                      console.log('User to send BE', userToSend);
                       res.status(200).json({
                           msg: '2',
                           userToSend: userToSend
